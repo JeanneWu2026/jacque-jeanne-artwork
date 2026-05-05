@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Jacque and Jeanne的字画习作集</title>
+  <meta name="description" content="Jacque and Jeanne的字画习作集 — 收藏书法、山水画、油画真迹与AI创作习作" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;600;700&family=Noto+Sans+SC:wght@300;400;500&family=Lora:ital,wght@0,400;0,600;1,400&family=ZCOOL+KuaiLe&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #fdf8f0;
+      --bg-card: #fff;
+      --text-primary: #2c2418;
+      --text-secondary: #6b5c45;
+      --text-muted: #9e8c76;
+      --border: #e8ddd0;
+      --primary: #8b5e3c;
+      --primary-light: #f5ede4;
+      --sidebar-bg: #f7f0e6;
+      --tag-calligraphy: #d4a853;
+      --tag-oil: #7c9e6e;
+      --tag-ai: #6b7fc4;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Noto Sans SC', sans-serif;
+      background: var(--bg);
+      color: var(--text-primary);
+      min-height: 100vh;
+    }
+    /* Header */
+    .header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(253,248,240,0.95);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 24px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .header-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      flex-shrink: 0;
+    }
+    .header-logo-icon {
+      width: 36px;
+      height: 36px;
+      background: var(--primary);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+    }
+    .header-logo-text {
+      font-family: 'Noto Serif SC', serif;
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text-primary);
+      line-height: 1.2;
+    }
+    .header-logo-sub {
+      font-size: 11px;
+      color: var(--text-muted);
+      font-weight: 400;
+    }
+    .search-bar {
+      flex: 1;
+      max-width: 480px;
+      position: relative;
+    }
+    .search-bar input {
+      width: 100%;
+      padding: 8px 16px 8px 40px;
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      background: #fff;
+      font-size: 14px;
+      color: var(--text-primary);
+      outline: none;
+      font-family: inherit;
+    }
+    .search-bar input:focus { border-color: var(--primary); }
+    .search-icon {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-muted);
+      font-size: 14px;
+    }
+    /* Layout */
+    .layout {
+      display: flex;
+      min-height: calc(100vh - 60px);
+    }
+    /* Sidebar */
+    .sidebar {
+      width: 200px;
+      flex-shrink: 0;
+      background: var(--sidebar-bg);
+      border-right: 1px solid var(--border);
+      padding: 20px 12px;
+      position: sticky;
+      top: 60px;
+      height: calc(100vh - 60px);
+      overflow-y: auto;
+    }
+    .sidebar-label {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 0 8px;
+      margin-bottom: 8px;
+    }
+    .sidebar-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 10px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 14px;
+      color: var(--text-secondary);
+      transition: all 0.15s;
+      border: none;
+      background: none;
+      width: 100%;
+      text-align: left;
+    }
+    .sidebar-item:hover { background: rgba(139,94,60,0.08); color: var(--primary); }
+    .sidebar-item.active { background: var(--primary); color: #fff; font-weight: 500; }
+    .sidebar-divider { height: 1px; background: var(--border); margin: 12px 8px; }
+    .sidebar-stats {
+      padding: 8px 10px;
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+    /* Main content */
+    .main {
+      flex: 1;
+      padding: 0;
+      overflow: hidden;
+    }
+    /* Hero */
+    .hero {
+      background: linear-gradient(135deg, #f5ede4 0%, #fdf8f0 50%, #eef3e8 100%);
+      padding: 48px 40px 40px;
+      border-bottom: 1px solid var(--border);
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '🏔️';
+      position: absolute;
+      right: 40px;
+      top: 20px;
+      font-size: 80px;
+      opacity: 0.08;
+    }
+    .hero-breadcrumb {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+    .hero-title {
+      font-family: 'Noto Serif SC', serif;
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--text-primary);
+      line-height: 1.3;
+      margin-bottom: 12px;
+    }
+    .hero-desc {
+      font-size: 15px;
+      color: var(--text-secondary);
+      max-width: 500px;
+      line-height: 1.7;
+      margin-bottom: 24px;
+    }
+    .hero-stats {
+      display: flex;
+      gap: 32px;
+    }
+    .hero-stat {
+      text-align: center;
+    }
+    .hero-stat-num {
+      font-family: 'Lora', serif;
+      font-size: 28px;
+      font-weight: 600;
+      color: var(--primary);
+    }
+    .hero-stat-label {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+    /* Gallery section */
+    .gallery-section {
+      padding: 24px 32px;
+    }
+    .gallery-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+    .gallery-title {
+      font-family: 'Noto Serif SC', serif;
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+    .gallery-count {
+      font-size: 13px;
+      color: var(--text-muted);
+      background: var(--primary-light);
+      padding: 3px 10px;
+      border-radius: 12px;
+    }
+    /* Masonry grid */
+    .masonry {
+      columns: 4;
+      column-gap: 16px;
+    }
+    @media (max-width: 1200px) { .masonry { columns: 3; } }
+    @media (max-width: 900px) { .masonry { columns: 2; } .sidebar { display: none; } }
+    @media (max-width: 600px) { .masonry { columns: 1; } .hero { padding: 24px 20px; } .gallery-section { padding: 16px; } }
+    .artwork-card {
+      break-inside: avoid;
+      margin-bottom: 16px;
+      border-radius: 12px;
+      overflow: hidden;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .artwork-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 24px rgba(139,94,60,0.15);
+    }
+    .artwork-card.hidden { display: none; }
+    .artwork-img-wrap {
+      width: 100%;
+      overflow: hidden;
+      background: #f5f0ea;
+    }
+    .artwork-img-wrap img {
+      width: 100%;
+      height: auto;
+      display: block;
+      transition: transform 0.3s;
+    }
+    .artwork-card:hover .artwork-img-wrap img { transform: scale(1.03); }
+    .artwork-info {
+      padding: 12px 14px 14px;
+    }
+    .artwork-title {
+      font-family: 'Noto Serif SC', serif;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 4px;
+      line-height: 1.4;
+    }
+    .artwork-artist {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+    .artwork-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 10px;
+      font-weight: 500;
+    }
+    .tag-calligraphy { background: #fef3e2; color: #92620a; }
+    .tag-oil { background: #edf5e8; color: #3d6b2e; }
+    .tag-ai { background: #eef0fb; color: #3d4fa8; }
+    /* Modal */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      background: rgba(0,0,0,0.6);
+      backdrop-filter: blur(4px);
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+    .modal-overlay.open { display: flex; }
+    .modal {
+      background: #fff;
+      border-radius: 16px;
+      max-width: 800px;
+      width: 100%;
+      max-height: 90vh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: row;
+      box-shadow: 0 24px 64px rgba(0,0,0,0.3);
+    }
+    @media (max-width: 640px) { .modal { flex-direction: column; } }
+    .modal-img-side {
+      flex: 1;
+      background: #f5f0ea;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 300px;
+      overflow: hidden;
+    }
+    .modal-img-side img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      max-height: 80vh;
+    }
+    .modal-info-side {
+      width: 280px;
+      flex-shrink: 0;
+      padding: 28px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      overflow-y: auto;
+    }
+    @media (max-width: 640px) { .modal-info-side { width: 100%; } }
+    .modal-close {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.9);
+      border: none;
+      cursor: pointer;
+      font-size: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-primary);
+    }
+    .modal-title {
+      font-family: 'Noto Serif SC', serif;
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--text-primary);
+      line-height: 1.3;
+    }
+    .modal-artist {
+      font-size: 14px;
+      color: var(--text-muted);
+    }
+    .modal-close-btn {
+      margin-top: auto;
+      padding: 10px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: none;
+      cursor: pointer;
+      font-size: 13px;
+      color: var(--text-secondary);
+      font-family: inherit;
+    }
+    .modal-close-btn:hover { background: var(--primary-light); }
+    /* No results */
+    .no-results {
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--text-muted);
+      display: none;
+    }
+    .no-results.show { display: block; }
+  </style>
+</head>
+<body>
+
+<!-- Header -->
+<header class="header">
+  <a class="header-logo" href="#">
+    <div class="header-logo-icon">🎨</div>
+    <div>
+      <div class="header-logo-text">Jacque and Jeanne的字画习作集</div>
+      <div class="header-logo-sub">Art Collection</div>
+    </div>
+  </a>
+  <div class="search-bar">
+    <span class="search-icon">🔍</span>
+    <input type="text" id="searchInput" placeholder="搜索习作、艺术家、标签..." oninput="filterArtworks()" />
+  </div>
+</header>
+
+<div class="layout">
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-label">分类</div>
+    <button class="sidebar-item active" onclick="filterCategory('全部', this)">🎨 全部</button>
+    <button class="sidebar-item" onclick="filterCategory('书法与山水画', this)">🏔️ 书法与山水画</button>
+    <button class="sidebar-item" onclick="filterCategory('油画', this)">🖼️ 油画</button>
+    <button class="sidebar-item" onclick="filterCategory('AI画', this)">✨ AI画</button>
+    <div class="sidebar-divider"></div>
+    <div class="sidebar-stats" id="statsText">共 33 幅习作</div>
+  </aside>
+
+  <!-- Main -->
+  <main class="main">
+    <!-- Hero -->
+    <div class="hero">
+      <div class="hero-breadcrumb">ART COLLECTION · 字画习作集</div>
+      <h1 class="hero-title">Jacque and Jeanne<br>的字画习作集</h1>
+      <p class="hero-desc">收藏山水之韵、油彩之美、AI之奇。每一幅习作都是一段故事，每一笔都是心灵的印记。</p>
+      <div class="hero-stats">
+        <div class="hero-stat">
+          <div class="hero-stat-num">28+</div>
+          <div class="hero-stat-label">书法与山水画</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-num">3</div>
+          <div class="hero-stat-label">艺术分类</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-num">33</div>
+          <div class="hero-stat-label">幅习作</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Gallery -->
+    <div class="gallery-section">
+      <div class="gallery-header">
+        <div class="gallery-title" id="galleryTitle">全部习作</div>
+        <div class="gallery-count" id="galleryCount">33 幅</div>
+      </div>
+      <div class="masonry" id="galleryGrid"></div>
+      <div class="no-results" id="noResults">没有找到相关习作</div>
+    </div>
+  </main>
+</div>
+
+<!-- Modal -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
+  <div class="modal" id="modal">
+    <div class="modal-img-side">
+      <img id="modalImg" src="" alt="" />
+    </div>
+    <div class="modal-info-side">
+      <div>
+        <h2 class="modal-title" id="modalTitle"></h2>
+        <p class="modal-artist" id="modalArtist"></p>
+      </div>
+      <div id="modalTag"></div>
+      <button class="modal-close-btn" onclick="closeModalBtn()">关闭</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const artworks = [
+  { src: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663572904256/KRWyLlBTgGHcXCwV.jpeg", title: "苹果·3D实渲染", artist: "Jacque & Jeanne", category: "AI画" },
+  { src: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663572904256/dUDRbzQHRXlCDxpd.jpeg", title: "火星漫游者·文艺复兴风", artist: "Jacque & Jeanne", category: "AI画" },
+  { src: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663572904256/pTrfNWImRkGqdCGa.jpeg", title: "书法与山水（十五）", artist: "Jacque & Jeanne", category: "书法与山水画" },
+  { src: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663572904256/mAgFzzmdSSXQkbzm.jpeg", title: "书法与山水（九）", artist: "Jacque & Jeanne", category: "书法与山水画" },
+  { src: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663572904256/NmgCExGOxFpTxust.jpeg", title: "书法与山水（十九）", artist: "Jacque & Jeanne", category: "书法与山水画" },
+  { src: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663572904256/sBCONsaXYYWmHWRJ.jpeg", title: "书法与山水（十八）", artist: "Jacque & Jeanne", category: "书法与山水画" },
+  { src: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663572904256/nhBKcowKWjJGVwDt.jpeg", title: "书法与山水（十七）", artist: "Jacque & Jeanne", category: "书法与山水画" },
+  { src: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663572904256/QkXAjIkDhCvyalQn.jpeg", title: "书法与山水（十六）", artist: "Jacque & Jeanne", category: "书法与山水画" },
+  { src: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663572904256/mfmyaiOOAOeakPDO.jpeg", title: "油画（三）", artist: "Jacque & Jeanne", category: "油画" },
+  { src: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663572904256/vXjBZPKDDOJqFcxK.jpeg", title: "书法与山水（一）", artist: "Jacque & Jeanne", category: "书法与山水画" },
+  { src: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663572904256/mgGOTHdlSGINtyyk.jpeg", title: "书法与山水（二）", artist: "Jacque & Jeanne", category: "书法与山水画" },
+  { src: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663572904256/MIpkPfqbvrwCpzCT.jpeg", title: "油画（一）", artist: "Jacque & Jeanne", category: "油画" },
+  { src: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663572904256/OMMkzffkiZpgjyOH.jpeg", title: "书法与山水（三）", artist: "Jacque & Jeanne", category: "书法与山水画" },
+  { src: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663572904256/zzfqOCLQRrEEjGqL.jpeg", title: "书法与山水（四）", artist: "Jacque & Jeanne", category: "书法与山水画" },
+  { src: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663572904256/vyFpVmnYliDyVOdt.jpeg", title: "书法与山水（五）", artist: "Jacque & Jeanne", category: "书法与山水画" },
+  { src: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663572904256/ZSOYGiFmnMTKpwYV.jpeg", title: "书法与山水（六）", artist: "Jacque & Jeanne", category: "书法与山水画" },
+  { src: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663572904256/toYuBleqkwYzihjR.jpeg", title: "油画（二）", artist: "Jacque & Jeanne", category: "油画" },
+  { src: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663572904256/gDaqDHInkbmLwbXk.jpeg", title: "书法与山水（七）", artist: "Jacque & Jeanne", category: "书法与山水画" },
+  { src: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663572904256/qyxjSWEmcfYQTkPY.jpeg", title: "书法与山水（十一）", artist: "Jacque & Jeanne", category: "书法与山水画" },
+  { src: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663572904256/ArWjAhEjaQRkDGuw.jpeg", title: "书法与山水（十）", artist: "Jacque & Jeanne", category: "书法与山水画" },
+  { src: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663572904256/oInWgyARxYokQvYS.jpeg", title: "书法与山水（八）", artist: "Jacque & Jeanne", category: "书法与山水画" },
+  { src: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663572904256/kAbzvWXPeDPdzAvK.jpeg", title: "书法与山水（十二）", artist: "Jacque & Jeanne", category: "书法与山水画" },
+  { src: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663572904256/UsEYnUwKzauQYNGo.jpeg", title: "书法与山水（十三）", artist: "Jacque & Jeanne", category: "书法与山水画" },
+  { src: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663572904256/QHzmaQczSHmAbwkg.jpeg", title: "书法与山水（十四）", artist: "Jacque & Jeanne", category: "书法与山水画" },
+  { src: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663572904256/QLtcHoitoiNrGPht.jpeg", title: "峰云图", artist: "邓天扬 · 乙亥年夏", category: "书法与山水画" },
+  { src: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663572904256/JyGQkIegXsLLNMWO.jpeg", title: "云腾峰起", artist: "邓天扬 · 戊戌初春", category: "书法与山水画" },
+  { src: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663572904256/kuuuPDTWsbvBGygW.jpeg", title: "庚子年春·花鸟", artist: "天扬 · 庚子年春", category: "书法与山水画" },
+  { src: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663572904256/uoxegMTaUyqXffDs.jpeg", title: "山景图", artist: "邓天扬 · 癸卯年初春", category: "书法与山水画" },
+  { src: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663572904256/wkTbDZwsRwGahyPo.jpeg", title: "峡江两岸", artist: "邓天扬 · 戊戌年仲夏", category: "书法与山水画" },
+  { src: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663572904256/fHiTrFIVINdTXIEn.jpeg", title: "云峰日出", artist: "邓天扬 · 戊戌冬月", category: "书法与山水画" },
+  { src: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663572904256/wjasTeoEbMjBhmer.jpeg", title: "云烟黄山", artist: "邓天扬 · 戊戌年深秋", category: "书法与山水画" },
+  { src: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663572904256/OEJbTuIMfkhHPPSv.jpeg", title: "己亥春月", artist: "天扬 · 己亥春月", category: "书法与山水画" },
+  { src: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663572904256/txZYCbjxHPyhITth.jpeg", title: "运财金猪", artist: "邓天扬 · 戊戌年大寒", category: "书法与山水画" },
+];
+
+const tagConfig = {
+  "书法与山水画": { cls: "tag-calligraphy", icon: "🏔️" },
+  "油画": { cls: "tag-oil", icon: "🖼️" },
+  "AI画": { cls: "tag-ai", icon: "✨" },
+};
+
+let currentCategory = "全部";
+let currentSearch = "";
+
+function renderGallery() {
+  const grid = document.getElementById("galleryGrid");
+  const noResults = document.getElementById("noResults");
+  const galleryCount = document.getElementById("galleryCount");
+  const galleryTitle = document.getElementById("galleryTitle");
+  const statsText = document.getElementById("statsText");
+
+  const filtered = artworks.filter(a => {
+    const matchCat = currentCategory === "全部" || a.category === currentCategory;
+    const q = currentSearch.toLowerCase();
+    const matchSearch = !q || a.title.toLowerCase().includes(q) || a.artist.toLowerCase().includes(q) || a.category.toLowerCase().includes(q);
+    return matchCat && matchSearch;
+  });
+
+  grid.innerHTML = "";
+  filtered.forEach((a, i) => {
+    const tag = tagConfig[a.category];
+    const card = document.createElement("div");
+    card.className = "artwork-card";
+    card.innerHTML = `
+      <div class="artwork-img-wrap">
+        <img src="${a.src}" alt="${a.title}" loading="lazy" />
+      </div>
+      <div class="artwork-info">
+        <div class="artwork-title">${a.title}</div>
+        <div class="artwork-artist">${a.artist}</div>
+        <span class="artwork-tag ${tag.cls}">${tag.icon} ${a.category}</span>
+      </div>
+    `;
+    card.onclick = () => openModal(a);
+    grid.appendChild(card);
+  });
+
+  const count = filtered.length;
+  galleryCount.textContent = `${count} 幅`;
+  galleryTitle.textContent = currentCategory === "全部" ? "全部习作" : currentCategory;
+  statsText.textContent = `共 ${count} 幅习作`;
+  noResults.classList.toggle("show", count === 0);
+}
+
+function filterCategory(cat, btn) {
+  currentCategory = cat;
+  document.querySelectorAll(".sidebar-item").forEach(b => b.classList.remove("active"));
+  btn.classList.add("active");
+  renderGallery();
+}
+
+function filterArtworks() {
+  currentSearch = document.getElementById("searchInput").value;
+  renderGallery();
+}
+
+function openModal(artwork) {
+  document.getElementById("modalImg").src = artwork.src;
+  document.getElementById("modalImg").alt = artwork.title;
+  document.getElementById("modalTitle").textContent = artwork.title;
+  document.getElementById("modalArtist").textContent = artwork.artist;
+  const tag = tagConfig[artwork.category];
+  document.getElementById("modalTag").innerHTML = `<span class="artwork-tag ${tag.cls}">${tag.icon} ${artwork.category}</span>`;
+  document.getElementById("modalOverlay").classList.add("open");
+  document.body.style.overflow = "hidden";
+}
+
+function closeModal(e) {
+  if (e.target === document.getElementById("modalOverlay")) {
+    closeModalBtn();
+  }
+}
+
+function closeModalBtn() {
+  document.getElementById("modalOverlay").classList.remove("open");
+  document.body.style.overflow = "";
+}
+
+document.addEventListener("keydown", e => {
+  if (e.key === "Escape") closeModalBtn();
+});
+
+// Init
+renderGallery();
+</script>
+</body>
+</html>
